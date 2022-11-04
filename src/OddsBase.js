@@ -124,56 +124,10 @@ export default function OddsBase() {
   const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
   const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const footballData = [{
-    away_team
-      :
-      "Los Angeles Chargers",
-    bookmakers
-      :
-      [{
-        key: 'barstool', last_update: "2022-11-04", markets: [
-          {
-            key: 'h2h', outcomes: [
-              { name: 'Atlanta Falcons', price: 2.33 },
-              { name: 'LA Rams', price: 1.62 }
-            ]
-          },
-          {
-            key: 'spreads', outcomes: [
-              { name: 'Atlanta Falcons', point: 3, price: 1.92 },
-              { name: 'LA Rams', point: -3, price: 1.89 }
-            ]
-          },
-          {
-            key: 'totals', outcomes: [
-              { name: 'Over', point: 49.5, price: 1.89 },
-              { name: 'Under', point: 49.5, price: 1.92 }
-            ]
-          }
-        ]
-      }],
-    commence_time
-      :
-      "2022-11-06T18:00:00Z",
-    home_team
-      :
-      "Atlanta Falcons",
-    id
-      :
-      "bba09e52bc88c100a91e824f49be11d5",
-    sport_key
-      :
-      "americanfootball_nfl",
-    sport_title
-      :
-      "NFL"
-  }]
   useEffect(() => {
     fetch(proFootballGamesApi)
       .then((response) => response.json())
       .then((data) => setProFootballData(data))
-    // setProFootballData(footballData)
   }, [])
 
   useEffect(() => {
