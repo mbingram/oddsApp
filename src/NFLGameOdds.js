@@ -32,10 +32,16 @@ import titans from './images/logo-titans.png'
 import vikings from './images/logo-vikings.png'
 
 export default function GameOdds({ game, gameKey }) {
-    // const homeLogo = {game.home_team == "New Orleans Saints" ? {saints}}
+    var moment = require('moment');
+    let startTime = moment.utc(game.commence_time).format("ddd, MMM Mo, hA")
+    console.log(startTime)
+
     return (
         <div className="flex flex-row m-2 h-32 border border-black rounded-sm w-fit" key={gameKey}>
             <div className="flex flex-col justify-center mt-auto">
+                <div className="">
+                    {startTime}
+                </div>
                 <div className="flex flex-row justify-center w-60 h-8 border border-summerYellow">
                     <div className="flex flex-col justify-center mr-2">
                         @ {game.home_team}
