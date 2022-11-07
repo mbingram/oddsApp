@@ -119,10 +119,10 @@ export default function OddsBase() {
   const [sportTypeFilter, setSportTypeFilter] = useState('NFL')
   const [sportsbookFilter, setSportsbookFilter] = useState('All')
 
-  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
-  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
-  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
-  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=6bf3b2fcfba13181fb775bf53c2ab336&regions=us&markets=h2h,spreads,totals'
+  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
 
   useEffect(() => {
     fetch(proFootballGamesApi)
@@ -133,10 +133,6 @@ export default function OddsBase() {
   useEffect(() => {
     fetchBySportFilter(sportTypeFilter)
   }, [sportTypeFilter])
-
-  useEffect(() => {
-    filterBySportsBook(sportsbookFilter)
-  }, [sportsbookFilter])
 
   const fetchBySportFilter = (sportTypeFilter) => {
     setProFootballData()
@@ -163,119 +159,127 @@ export default function OddsBase() {
   }
 
   const filterBySportsBook = (sportsbookFilter) => {
-    if (sportsbookFilter === 'All'){
+
+    if (sportsbookFilter === 'All') {
       fetchBySportFilter(sportTypeFilter)
-    } else {
-      if (sportTypeFilter === 'NFL'){
-        proFootballData.filter(game => game.bookmakers.key === sportsbookFilter)
-      } else if (sportTypeFilter === 'NCAAF'){
-        collegeFootballData.filter(game => game.bookmakers.key === sportsbookFilter)
-      } else if (sportTypeFilter === 'MLB'){
-        mlbData.filter(game => game.bookmakers.key === sportsbookFilter)
-      } else if (sportTypeFilter === 'Upcoming'){
-        upcomingGamesData.filter(game => game.bookmakers.key === sportsbookFilter)
-      }
+    } else if (sportTypeFilter === 'NFL') {
+      let filteredData = proFootballData.map((proGame) => {
+        return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
+      })
+      setProFootballData(filteredData)
+    } else if (sportTypeFilter === 'NCAAF') {
+      let filteredData = collegeFootballData.map((collegeGame) => {
+        return { ...collegeGame, bookmakers: collegeGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
+      })
+      setCollegeFootballData(filteredData)
+    } else if (sportTypeFilter === 'MLB') {
+      let filteredData = mlbData.map((mlbGame) => {
+        return { ...mlbGame, bookmakers: mlbGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
+      })
+      setMlbData(filteredData)
+    } else if (sportTypeFilter === 'Upcoming') {
+      let filteredData = upcomingGamesData.map((upcomingGame) => {
+        return { ...upcomingGame, bookmakers: upcomingGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
+      })
+      setUpcomingGamesData(filteredData)
     }
   }
 
-  const handleSportTypeFilter = (event) => {
-    if (event.target.value === 'NFL') {
-      setSportTypeFilter('NFL')
-    } else if (event.target.value === 'NCAAF') {
-      setSportTypeFilter('NCAAF')
-    } else if (event.target.value === 'Upcoming') {
-      setSportTypeFilter('Upcoming')
-    } else if (event.target.value === 'MLB') {
-      setSportTypeFilter('MLB')
-    }
+const handleSportTypeFilter = (event) => {
+  if (event.target.value === 'NFL') {
+    setSportTypeFilter('NFL')
+  } else if (event.target.value === 'NCAAF') {
+    setSportTypeFilter('NCAAF')
+  } else if (event.target.value === 'Upcoming') {
+    setSportTypeFilter('Upcoming')
+  } else if (event.target.value === 'MLB') {
+    setSportTypeFilter('MLB')
   }
+}
 
-  const handleSportsbookFilter = (event) => {
-    if (event.target.value === 'All') {
-      setSportTypeFilter('All')
-    } else {
-      setSportsbookFilter(event.target.value)
-    }
-  }
+const handleSportsbookFilter = (event) => {
+  setSportsbookFilter(event.target.value)
+  filterBySportsBook(event.target.value)
+}
 
-  return (
-    <div className="flex flex-col w-full">
-      <div className="h-20 px-20 flex flex-row border border-black">
-        <div className="mr-8 h-full flex flex-col justify-center">
-          Filter by Sport
-        </div>
-        <div className="py-auto mr-8 h-full flex flex-col justify-center">
-          <Box sx={{ minWidth: 120 }} >
-            <FormControl fullWidth className={classes.root}>
-              <Select
-                id="demo-simple-select"
-                value={sportTypeFilter}
-                onChange={handleSportTypeFilter}
-                defaultValue={'NFL'}
-                className={"h-10"}
-              >
-                <MenuItem value={'NFL'}>NFL</MenuItem>
-                <MenuItem value={'NCAAF'}>College Football</MenuItem>
-                <MenuItem value={'MLB'}>MLB</MenuItem>
-                <MenuItem value={'Upcoming'}>Today's Games</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-        <div className="mr-8 h-full flex flex-col justify-center">
-          Filter by SportsBook
-        </div>
-        <div className="py-auto h-full flex flex-col justify-center">
-          <Box sx={{ minWidth: 120 }} >
-            <FormControl fullWidth className={classes.root}>
-              <Select
-                id="demo-simple-select"
-                value={sportsbookFilter}
-                onChange={handleSportsbookFilter}
-                defaultValue={'All'}
-                className={"h-10"}
-              >
-                <MenuItem value={'All'}>All</MenuItem>
-                <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
-                <MenuItem value={'draftkings'}>DraftKings</MenuItem>
-                <MenuItem value={'pointsbetus'}>PointsBet (US)</MenuItem>
-                <MenuItem value={'betmgm'}>Bet MGM</MenuItem>
-                <MenuItem value={'betrivers'}>BetRivers</MenuItem>
-                <MenuItem value={'unibet'}>Unitbet</MenuItem>
-                <MenuItem value={'caesars'}>Caesars</MenuItem>
-                <MenuItem value={'sugarhouse'}>SugarHouse</MenuItem>
-                <MenuItem value={'betonlineag'}>BetOnline.ag</MenuItem>
-                <MenuItem value={'fanduel'}>FanDuel</MenuItem>
-                <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
-                <MenuItem value={'williamhill_us'}>William Hill (US)</MenuItem>
-                <MenuItem value={'bovada'}>Bovada</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
+return (
+  <div className="flex flex-col w-full">
+    <div className="h-20 px-20 flex flex-row border border-black">
+      <div className="mr-8 h-full flex flex-col justify-center">
+        Filter by Sport
       </div>
-      <div>
-        {proFootballData &&
-          proFootballData.map((game) => {
-            return <GameOdds gameKey={game.id} game={game} />
-          })
-        }
-        {collegeFootballData &&
-          collegeFootballData.map((game) => {
-            return <GameOdds gameKey={game.id} game={game} />
-          })
-        }
-        {mlbData &&
-          mlbData.map((game) => {
-            return <GameOdds gameKey={game.id} game={game} />
-          })
-        }
-        {upcomingGamesData &&
-          upcomingGamesData.map((game) => {
-            return <GameOdds gameKey={game.id} game={game} />
-          })
-        }
+      <div className="py-auto mr-8 h-full flex flex-col justify-center">
+        <Box sx={{ minWidth: 120 }} >
+          <FormControl fullWidth className={classes.root}>
+            <Select
+              id="sport-type-filter"
+              value={sportTypeFilter}
+              onChange={handleSportTypeFilter}
+              defaultValue={'NFL'}
+              className={"h-10"}
+            >
+              <MenuItem value={'NFL'}>NFL</MenuItem>
+              <MenuItem value={'NCAAF'}>College Football</MenuItem>
+              <MenuItem value={'MLB'}>MLB</MenuItem>
+              <MenuItem value={'Upcoming'}>Today's Games</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </div>
+      <div className="mr-8 h-full flex flex-col justify-center">
+        Filter by SportsBook
+      </div>
+      <div className="py-auto h-full flex flex-col justify-center">
+        <Box sx={{ minWidth: 120 }} >
+          <FormControl fullWidth className={classes.root}>
+            <Select
+              id="sportsbook-filter"
+              value={sportsbookFilter}
+              onChange={handleSportsbookFilter}
+              defaultValue={'All'}
+              className={"h-10"}
+            >
+              <MenuItem value={'All'}>All</MenuItem>
+              <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
+              <MenuItem value={'draftkings'}>DraftKings</MenuItem>
+              <MenuItem value={'pointsbetus'}>PointsBet (US)</MenuItem>
+              <MenuItem value={'betmgm'}>Bet MGM</MenuItem>
+              <MenuItem value={'betrivers'}>BetRivers</MenuItem>
+              <MenuItem value={'unibet'}>Unitbet</MenuItem>
+              <MenuItem value={'caesars'}>Caesars</MenuItem>
+              <MenuItem value={'sugarhouse'}>SugarHouse</MenuItem>
+              <MenuItem value={'betonlineag'}>BetOnline.ag</MenuItem>
+              <MenuItem value={'fanduel'}>FanDuel</MenuItem>
+              <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
+              <MenuItem value={'williamhill_us'}>William Hill (US)</MenuItem>
+              <MenuItem value={'bovada'}>Bovada</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </div>
     </div>
-  )
+    <div>
+      {proFootballData &&
+        proFootballData.map((game) => {
+          return <GameOdds gameKey={game.id} game={game} />
+        })
+      }
+      {collegeFootballData &&
+        collegeFootballData.map((game) => {
+          return <GameOdds gameKey={game.id} game={game} />
+        })
+      }
+      {mlbData &&
+        mlbData.map((game) => {
+          return <GameOdds gameKey={game.id} game={game} />
+        })
+      }
+      {upcomingGamesData &&
+        upcomingGamesData.map((game) => {
+          return <GameOdds gameKey={game.id} game={game} />
+        })
+      }
+    </div>
+  </div>
+)
 }
