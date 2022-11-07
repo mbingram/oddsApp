@@ -1,12 +1,3 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   content: ["./src/**/*.{html,js}"],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
-
 module.exports = {
   important: true,
   future: {
@@ -38,32 +29,6 @@ module.exports = {
     extend: {
       backgroundImage: theme => ({
         // 'green-bubbles': "url('/src/images/pictures/green_bubbles.png')",
-        // 'landing-banner': "url('/src/images/pictures/landing_page_banner.png')",
-        // 'purple-bubbles': "url('/src/images/pictures/purple_background.png')",
-        // 'yellow-bubbles': "url('/src/images/pictures/yellow_background.png')",
-        // 'teal-bubbles': "url('/src/images/pictures/aqua_background.png')",
-        // 'orange-bubbles': "url('/src/images/pictures/orange_background.png')",
-        // 'signup': "url('/src/images/pictures/signup_background.png')",
-        // 'delete': "url('/src/images/pictures/delete_background.png')",
-        // 'about-banner': "url('/src/images/pictures/about_header.png')",
-        // 'faq-banner': "url('/src/images/pictures/FAQ_header.png')",
-        // 'kathi-commands-banner': "url('/src/images/pictures/kathi_commands_header.png')",
-        // 'help-desk': "url('/src/images/humaans/Humaaans_Space.svg')",
-        // 'no-members': "url('/src/images/humaans/NoMembersYet.svg')",
-        // 'no-members-2': "url('/src/images/humaans/NoMembersYet2.svg')",
-        // 'no-members-spread': "url('/src/images/humaans/NoMembersSpread.svg')",
-        // 'no-members-png': "url('/src/images/humaans/NoMembersSpread.png')",
-        // 'no-libraries': "url('/src/images/humaans/NoLibrariesYet.svg')",
-        // 'no-chats': "url('/src/images/humaans/NoChatsYet.svg')",
-        // 'no-chats-2': "url('/src/images/humaans/NoChatsYet2.svg')",
-        // 'no-chats-spread': "url('/src/images/humaans/NoChatsSpread.svg')",
-        // 'no-chats-png': "url('/src/images/humaans/NoChatsSpread.png')",
-        // 'no-blasts': "url('/src/images/humaans/NoScheduledBlasts.svg')",
-        // 'no-blasts-2': "url('/src/images/humaans/NoScheduledBlasts2.svg')",
-        // 'no-blasts-small': "url('/src/images/humaans/NoScheduledBlastsSmall.svg')",
-        // 'no-blasts-spread': "url('/src/images/humaans/NoScheduledBlastsSpread.svg')",
-        // 'no-blasts-png': "url('/src/images/humaans/NoScheduledBlastsSpread.png')",
-        // 'no-past-blasts-svg': "url('/src/images/humaans/NoPastBlasts.svg')",
       }),
       padding: {
         '1px': '1px',

@@ -10,7 +10,7 @@ export default function SportsBook({ book, bookKey }) {
             <div className="flex flex-row mr-1px">
                 {book.markets.map((market) => {
                     return <div className="flex flex-col border-r-2 border-gray">
-                        <div className="h-8 w-16 ml-2">
+                        <div className="h-8 w-16 ml-2 flex flex-col justify-center">
                             {market.key}
                         </div>
                         <div className="">
