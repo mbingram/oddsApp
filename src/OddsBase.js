@@ -120,7 +120,7 @@ export default function OddsBase() {
   const [collegeFootballData, setCollegeFootballData] = useState()
   const [mlbData, setMlbData] = useState()
   const [upcomingGamesData, setUpcomingGamesData] = useState()
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(true)
   const [sportTypeFilter, setSportTypeFilter] = useState('NFL')
   const [sportsbookFilter, setSportsbookFilter] = useState('All')
 
@@ -265,7 +265,7 @@ return (
     <div>
       {proFootballData &&
         proFootballData.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} />
+          return <NFLGameOdds gameKey={game.id} game={game} setLoading={setLoading} />
         })
       }
       {collegeFootballData &&

@@ -31,9 +31,31 @@ import texans from './images/logo-texans.png'
 import titans from './images/logo-titans.png'
 import vikings from './images/logo-vikings.png'
 
-export default function GameOdds({ game, gameKey }) {
+export default function GameOdds({ game, gameKey, setLoading }) {
     var moment = require('moment');
+
     let startTime = moment(game.commence_time).format("ddd, MMM Do, hA")
+
+    let [sortedBooksByAlpha, setSortedBooksByAlpha] = React.useState()
+
+    const sortBooksByAlphabetical = (game) => {
+        let books = game.bookmakers
+        let sortedBooks = books.sort(function(a, b){
+            if(a.key > b.key){
+                return 1
+            }
+            if(a.key < b.key){
+                return -1
+            }
+            return 0
+        })
+        setSortedBooksByAlpha(sortedBooks)
+        setLoading(false)
+    }
+
+    React.useEffect(() => {
+        sortBooksByAlphabetical(game)
+    })
 
     return (
         <div className="flex flex-row m-2 h-36 border border-black rounded-sm w-fit" key={gameKey}>
