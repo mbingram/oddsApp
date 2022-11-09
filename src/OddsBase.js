@@ -245,18 +245,17 @@ return (
             >
               <MenuItem value={'All'}>All</MenuItem>
               <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
-              <MenuItem value={'draftkings'}>DraftKings</MenuItem>
-              <MenuItem value={'pointsbetus'}>PointsBet (US)</MenuItem>
               <MenuItem value={'betmgm'}>Bet MGM</MenuItem>
-              <MenuItem value={'betrivers'}>BetRivers</MenuItem>
-              <MenuItem value={'unibet'}>Unitbet</MenuItem>
-              <MenuItem value={'caesars'}>Caesars</MenuItem>
-              <MenuItem value={'sugarhouse'}>SugarHouse</MenuItem>
               <MenuItem value={'betonlineag'}>BetOnline.ag</MenuItem>
-              <MenuItem value={'fanduel'}>FanDuel</MenuItem>
-              <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
-              <MenuItem value={'williamhill_us'}>William Hill (US)</MenuItem>
+              <MenuItem value={'betrivers'}>BetRivers</MenuItem>
               <MenuItem value={'bovada'}>Bovada</MenuItem>
+              <MenuItem value={'caesars'}>Caesars</MenuItem>
+              <MenuItem value={'draftkings'}>DraftKings</MenuItem>
+              <MenuItem value={'fanduel'}>FanDuel</MenuItem>
+              <MenuItem value={'pointsbetus'}>PointsBet (US)</MenuItem>
+              <MenuItem value={'sugarhouse'}>SugarHouse</MenuItem>
+              <MenuItem value={'unibet'}>Unitbet</MenuItem>
+              <MenuItem value={'williamhill_us'}>William Hill (US)</MenuItem>
             </Select>
           </FormControl>
         </Box>
