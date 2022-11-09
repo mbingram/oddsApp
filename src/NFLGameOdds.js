@@ -33,13 +33,12 @@ import vikings from './images/logo-vikings.png'
 
 export default function GameOdds({ game, gameKey }) {
     var moment = require('moment');
-    let startTime = moment.utc(game.commence_time).format("ddd, MMM Mo, hA")
-    console.log(startTime)
+    let startTime = moment(game.commence_time).format("ddd, MMM Do, hA")
 
     return (
-        <div className="flex flex-row m-2 h-32 border border-black rounded-sm w-fit" key={gameKey}>
-            <div className="flex flex-col justify-center mt-auto">
-                <div className="">
+        <div className="flex flex-row m-2 h-36 border border-black rounded-sm w-fit" key={gameKey}>
+            <div className="flex flex-col justify-center">
+                <div className="my-auto ml-2">
                     {startTime}
                 </div>
                 <div className="flex flex-row justify-center w-60 h-8 border border-summerYellow">

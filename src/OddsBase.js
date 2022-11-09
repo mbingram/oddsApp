@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Box, FormControl, MenuItem, Select, makeStyles, createTheme } from '@material-ui/core';
 import NFLGameOdds from './NFLGameOdds'
+import NCAAGameOdds from './NCAAGameOdds'
+import MLBGameOdds from './MLBGameOdds'
+import UpcomingGameOdds from './UpcomingGameOdds'
 import './App.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -109,6 +112,8 @@ export const customTheme = createTheme({
 
 export default function OddsBase() {
 
+  // const bookFilter = React.useRef(null)
+
   const classes = useStyles()
 
   const [proFootballData, setProFootballData] = useState()
@@ -119,10 +124,10 @@ export default function OddsBase() {
   const [sportTypeFilter, setSportTypeFilter] = useState('NFL')
   const [sportsbookFilter, setSportsbookFilter] = useState('All')
 
-  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&dateFormat=unix'
-  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&dateFormat=unix'
-  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&dateFormat=unix'
-  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&dateFormat=unix'
+  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
 
   useEffect(() => {
     fetch(proFootballGamesApi)
@@ -265,17 +270,17 @@ return (
       }
       {collegeFootballData &&
         collegeFootballData.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} />
+          return <NCAAGameOdds gameKey={game.id} game={game} />
         })
       }
       {mlbData &&
         mlbData.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} />
+          return <MLBGameOdds gameKey={game.id} game={game} />
         })
       }
       {upcomingGamesData &&
         upcomingGamesData.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} />
+          return <UpcomingGameOdds gameKey={game.id} game={game} />
         })
       }
     </div>
