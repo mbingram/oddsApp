@@ -19,8 +19,17 @@ export default function SportsBook({ book, bookKey }) {
                         </div>
                         <div className="justify-center">
                             {market.outcomes.map((outcome) => {
-                                return <div className="h-8 flex flex-row justify-center items-center border-t-2 border-gray">
-                                    {outcome.price > 2 ? `+${Math.trunc((outcome.price - 1)*100)}` : Math.trunc(-100/(outcome.price - 1))}
+                                return <div className="h-10 flex flex-row justify-center items-center border-t-2 border-gray text-sm text-center">
+                                    <div>
+                                        <div>
+                                            {outcome.price}
+                                        </div>
+                                        {outcome.point && 
+                                            <div>
+                                                {outcome.point}
+                                            </div>
+                                        }
+                                    </div>
                                     </div>
                             })}
                         </div>

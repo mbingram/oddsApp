@@ -117,6 +117,7 @@ export default function OddsBase() {
   const classes = useStyles()
 
   const [proFootballData, setProFootballData] = useState()
+  const [filteredDataBySportsbook, setFilteredDataBySportsbook] = useState()
   const [collegeFootballData, setCollegeFootballData] = useState()
   const [mlbData, setMlbData] = useState()
   const [upcomingGamesData, setUpcomingGamesData] = useState()
@@ -124,10 +125,10 @@ export default function OddsBase() {
   const [sportTypeFilter, setSportTypeFilter] = useState('NFL')
   const [sportsbookFilter, setSportsbookFilter] = useState('All')
 
-  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
-  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
-  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
-  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals'
+  const upcomingGamesApi = 'https://api.the-odds-api.com//v4/sports/upcoming/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
+  const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
+  const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
+  const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
 
   useEffect(() => {
     fetch(proFootballGamesApi)
@@ -140,6 +141,8 @@ export default function OddsBase() {
   }, [sportTypeFilter])
 
   const fetchBySportFilter = (sportTypeFilter) => {
+    setFilteredDataBySportsbook()
+    setSportsbookFilter('All')
     setProFootballData()
     setCollegeFootballData()
     setMlbData()
@@ -164,28 +167,29 @@ export default function OddsBase() {
   }
 
   const filterBySportsBook = (sportsbookFilter) => {
+    setFilteredDataBySportsbook()
     if (sportsbookFilter === 'All') {
       fetchBySportFilter(sportTypeFilter)
     } else if (sportTypeFilter === 'NFL') {
       let filteredData = proFootballData.map((proGame) => {
         return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
-      setProFootballData(filteredData)
+      setFilteredDataBySportsbook(filteredData)
     } else if (sportTypeFilter === 'NCAAF') {
       let filteredData = collegeFootballData.map((collegeGame) => {
         return { ...collegeGame, bookmakers: collegeGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
-      setCollegeFootballData(filteredData)
+      setFilteredDataBySportsbook(filteredData)
     } else if (sportTypeFilter === 'MLB') {
       let filteredData = mlbData.map((mlbGame) => {
         return { ...mlbGame, bookmakers: mlbGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
-      setMlbData(filteredData)
+      setFilteredDataBySportsbook(filteredData)
     } else if (sportTypeFilter === 'Upcoming') {
       let filteredData = upcomingGamesData.map((upcomingGame) => {
         return { ...upcomingGame, bookmakers: upcomingGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
-      setUpcomingGamesData(filteredData)
+      setFilteredDataBySportsbook(filteredData)
     }
   }
 
@@ -262,23 +266,39 @@ return (
       </div>
     </div>
     <div>
-      {proFootballData &&
+      {proFootballData && !filteredDataBySportsbook ?
         proFootballData.map((game) => {
+          return <NFLGameOdds gameKey={game.id} game={game} setLoading={setLoading} />
+        }) :
+        filteredDataBySportsbook &&
+        filteredDataBySportsbook.map((game) => {
           return <NFLGameOdds gameKey={game.id} game={game} setLoading={setLoading} />
         })
       }
-      {collegeFootballData &&
+      {collegeFootballData && !filteredDataBySportsbook ?
         collegeFootballData.map((game) => {
+          return <NCAAGameOdds gameKey={game.id} game={game} />
+        }) :
+        filteredDataBySportsbook &&
+        filteredDataBySportsbook.map((game) => {
           return <NCAAGameOdds gameKey={game.id} game={game} />
         })
       }
-      {mlbData &&
+      {mlbData && !filteredDataBySportsbook ?
         mlbData.map((game) => {
+          return <MLBGameOdds gameKey={game.id} game={game} />
+        }) :
+        filteredDataBySportsbook &&
+        filteredDataBySportsbook.map((game) => {
           return <MLBGameOdds gameKey={game.id} game={game} />
         })
       }
-      {upcomingGamesData &&
+      {upcomingGamesData && !filteredDataBySportsbook ?
         upcomingGamesData.map((game) => {
+          return <UpcomingGameOdds gameKey={game.id} game={game} />
+        }) :
+        filteredDataBySportsbook &&
+        filteredDataBySportsbook.map((game) => {
           return <UpcomingGameOdds gameKey={game.id} game={game} />
         })
       }
