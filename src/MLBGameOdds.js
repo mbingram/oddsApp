@@ -1,7 +1,8 @@
 import React from 'react'
 import SportsBook from './SportsBook'
+import LoadingSpinnerNoPadding from './utilities/LoadingSpinner'
 
-export default function MLBGameOdds({ game, gameKey, setLoading }) {
+export default function MLBGameOdds({ game, gameKey, loading, setLoading }) {
     var moment = require('moment');
 
     let startTime = moment(game.commence_time).format("ddd, MMM Do, hA")
@@ -26,6 +27,12 @@ export default function MLBGameOdds({ game, gameKey, setLoading }) {
     React.useEffect(() => {
         sortBooksByAlphabetical(game)
     })
+
+    // if(loading){
+    //     return(
+    //         <LoadingSpinnerNoPadding />
+    //     )
+    // }
 
     return (
         <div className="flex flex-row m-2 h-36 border border-black rounded-sm w-fit" key={gameKey}>

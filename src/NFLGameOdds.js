@@ -30,8 +30,9 @@ import steelers from './images/logo-steelers.png'
 import texans from './images/logo-texans.png'
 import titans from './images/logo-titans.png'
 import vikings from './images/logo-vikings.png'
+import LoadingSpinnerNoPadding from './utilities/LoadingSpinner'
 
-export default function GameOdds({ game, gameKey, setLoading }) {
+export default function GameOdds({ game, gameKey, loading, setLoading }) {
     var moment = require('moment');
 
     let startTime = moment(game.commence_time).format("ddd, MMM Do, hA")
@@ -56,6 +57,12 @@ export default function GameOdds({ game, gameKey, setLoading }) {
     React.useEffect(() => {
         sortBooksByAlphabetical(game)
     })
+
+    if(loading){
+        return(
+            <LoadingSpinnerNoPadding />
+        )
+    }
 
     return (
         <div className="flex flex-row m-2 h-36 border border-black rounded-sm w-fit" key={gameKey}>

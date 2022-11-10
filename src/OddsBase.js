@@ -5,6 +5,7 @@ import NCAAGameOdds from './NCAAGameOdds'
 import MLBGameOdds from './MLBGameOdds'
 import UpcomingGameOdds from './UpcomingGameOdds'
 import './App.css'
+import LoadingSpinnerNoPadding from './utilities/LoadingSpinner'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -134,6 +135,7 @@ export default function OddsBase() {
     fetch(proFootballGamesApi)
       .then((response) => response.json())
       .then((data) => setProFootballData(data))
+      setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -141,6 +143,7 @@ export default function OddsBase() {
   }, [sportTypeFilter])
 
   const fetchBySportFilter = (sportTypeFilter) => {
+    // setLoading(true)
     setFilteredDataBySportsbook()
     setSportsbookFilter('All')
     setProFootballData()
@@ -151,18 +154,22 @@ export default function OddsBase() {
       fetch(proFootballGamesApi)
         .then((response) => response.json())
         .then((data) => setProFootballData(data))
-    } else if (sportTypeFilter === 'NCAAF') {
-      fetch(collegeFootballGamesApi)
+        // setLoading(false)
+      } else if (sportTypeFilter === 'NCAAF') {
+        fetch(collegeFootballGamesApi)
         .then((response) => response.json())
         .then((data) => setCollegeFootballData(data))
-    } else if (sportTypeFilter === 'MLB') {
-      fetch(mlbGamesApi)
+        // setLoading(false)
+      } else if (sportTypeFilter === 'MLB') {
+        fetch(mlbGamesApi)
         .then((response) => response.json())
         .then((data) => setMlbData(data))
-    } else {
-      fetch(upcomingGamesApi)
+        // setLoading(false)
+      } else {
+        fetch(upcomingGamesApi)
         .then((response) => response.json())
         .then((data) => setUpcomingGamesData(data))
+        // setLoading(false)
     }
   }
 
@@ -208,6 +215,12 @@ const handleSportTypeFilter = (event) => {
 const handleSportsbookFilter = (event) => {
   setSportsbookFilter(event.target.value)
   filterBySportsBook(event.target.value)
+}
+
+if(loading){
+  return(
+      <LoadingSpinnerNoPadding />
+  )
 }
 
 return (
@@ -268,38 +281,38 @@ return (
     <div>
       {proFootballData && !filteredDataBySportsbook ?
         proFootballData.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} setLoading={setLoading} />
+          return <NFLGameOdds gameKey={game.id} game={game} loading={loading} setLoading={setLoading} />
         }) :
         filteredDataBySportsbook &&
         filteredDataBySportsbook.map((game) => {
-          return <NFLGameOdds gameKey={game.id} game={game} setLoading={setLoading} />
+          return <NFLGameOdds gameKey={game.id} game={game} loading={loading} setLoading={setLoading} />
         })
       }
       {collegeFootballData && !filteredDataBySportsbook ?
         collegeFootballData.map((game) => {
-          return <NCAAGameOdds gameKey={game.id} game={game} />
+          return <NCAAGameOdds gameKey={game.id} game={game} loading={loading} />
         }) :
         filteredDataBySportsbook &&
         filteredDataBySportsbook.map((game) => {
-          return <NCAAGameOdds gameKey={game.id} game={game} />
+          return <NCAAGameOdds gameKey={game.id} game={game} loading={loading} />
         })
       }
       {mlbData && !filteredDataBySportsbook ?
         mlbData.map((game) => {
-          return <MLBGameOdds gameKey={game.id} game={game} />
+          return <MLBGameOdds gameKey={game.id} game={game} loading={loading} />
         }) :
         filteredDataBySportsbook &&
         filteredDataBySportsbook.map((game) => {
-          return <MLBGameOdds gameKey={game.id} game={game} />
+          return <MLBGameOdds gameKey={game.id} game={game} loading={loading} />
         })
       }
       {upcomingGamesData && !filteredDataBySportsbook ?
         upcomingGamesData.map((game) => {
-          return <UpcomingGameOdds gameKey={game.id} game={game} />
+          return <UpcomingGameOdds gameKey={game.id} game={game} loading={loading} />
         }) :
         filteredDataBySportsbook &&
         filteredDataBySportsbook.map((game) => {
-          return <UpcomingGameOdds gameKey={game.id} game={game} />
+          return <UpcomingGameOdds gameKey={game.id} game={game} loading={loading} />
         })
       }
     </div>
