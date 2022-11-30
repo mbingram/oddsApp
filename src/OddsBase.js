@@ -189,7 +189,7 @@ export default function OddsBase() {
       fetchBySportFilter(sportTypeFilter)
     } else if (sportsbookFilter === 'favorites') {
       let filteredData = dataToMap.map((proGame) => {
-        return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === 'barstool' || book.key === 'fanduel' || book.key === 'pointsbetus' || book.key === 'betmgm' || book.key === 'caesars')
+        return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === 'barstool' || book.key === 'fanduel' || book.key === 'pointsbetus' || book.key === 'betmgm' || book.key === 'caesars' || book.key === 'foxbet' || book.key === 'superbook' || book.key === 'betrivers' || book.key === 'draftkings' || book.key === 'wynnbet' || book.key === 'foxbet')
         }
       })
       setFilteredDataBySportsbook(filteredData)
