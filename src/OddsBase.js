@@ -184,43 +184,18 @@ export default function OddsBase() {
 
   const filterBySportsBook = (sportsbookFilter) => {
     setFilteredDataBySportsbook()
+    let dataToMap = sportTypeFilter === 'NFL' ? proFootballData : sportTypeFilter === 'NCAAF' ? collegeFootballData : sportTypeFilter === 'MLB' ? mlbData : sportTypeFilter === 'NHL' ? nhlData : sportTypeFilter === 'Upcoming' && upcomingGamesData
     if (sportsbookFilter === 'All') {
       fetchBySportFilter(sportTypeFilter)
-    } else if (sportTypeFilter === 'favorites') {
-      let filteredData = proFootballData.map((proGame) => {
-        return { ...proGame, bookmakers: proGame.bookmakers
-          .filter((book) => book.key === 'barstool')
-          .filter((book) => book.key === 'fanduel')
-          .filter((book) => book.key === 'pointsbetus')
-          .filter((book) => book.key === 'betmgm')
-          .filter((book) => book.key === 'caesars')
+    } else if (sportsbookFilter === 'favorites') {
+      let filteredData = dataToMap.map((proGame) => {
+        return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === 'barstool' || book.key === 'fanduel' || book.key === 'pointsbetus' || book.key === 'betmgm' || book.key === 'caesars')
         }
       })
-      console.log(filteredData)
       setFilteredDataBySportsbook(filteredData)
-    } else if (sportTypeFilter === 'NFL') {
-      let filteredData = proFootballData.map((proGame) => {
+    } else {
+      let filteredData = dataToMap.map((proGame) => {
         return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
-      })
-      setFilteredDataBySportsbook(filteredData)
-    } else if (sportTypeFilter === 'NCAAF') {
-      let filteredData = collegeFootballData.map((collegeGame) => {
-        return { ...collegeGame, bookmakers: collegeGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
-      })
-      setFilteredDataBySportsbook(filteredData)
-    } else if (sportTypeFilter === 'MLB') {
-      let filteredData = mlbData.map((mlbGame) => {
-        return { ...mlbGame, bookmakers: mlbGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
-      })
-      setFilteredDataBySportsbook(filteredData)
-    } else if (sportTypeFilter === 'NHL') {
-      let filteredData = nhlData.map((nhlGame) => {
-        return { ...nhlGame, bookmakers: nhlGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
-      })
-      setFilteredDataBySportsbook(filteredData)
-    } else if (sportTypeFilter === 'Upcoming') {
-      let filteredData = upcomingGamesData.map((upcomingGame) => {
-        return { ...upcomingGame, bookmakers: upcomingGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
       setFilteredDataBySportsbook(filteredData)
     }
