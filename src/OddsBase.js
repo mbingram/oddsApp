@@ -3,6 +3,7 @@ import { Box, FormControl, MenuItem, Select, makeStyles, createTheme } from '@ma
 import NFLGameOdds from './NFLGameOdds'
 import NCAAGameOdds from './NCAAGameOdds'
 import MLBGameOdds from './MLBGameOdds'
+import NHLGameOdds from './NHLGameOdds'
 import UpcomingGameOdds from './UpcomingGameOdds'
 import './App.css'
 import LoadingSpinnerNoPadding from './utilities/LoadingSpinner'
@@ -121,6 +122,7 @@ export default function OddsBase() {
   const [filteredDataBySportsbook, setFilteredDataBySportsbook] = useState()
   const [collegeFootballData, setCollegeFootballData] = useState()
   const [mlbData, setMlbData] = useState()
+  const [nhlData, setNhlData] = useState()
   const [upcomingGamesData, setUpcomingGamesData] = useState()
   const [loading, setLoading] = useState(true)
   const [sportTypeFilter, setSportTypeFilter] = useState('NFL')
@@ -130,6 +132,7 @@ export default function OddsBase() {
   const proFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_nfl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
   const collegeFootballGamesApi = 'https://api.the-odds-api.com//v4/sports/americanfootball_ncaaf/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
   const mlbGamesApi = 'https://api.the-odds-api.com//v4/sports/baseball_mlb/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
+  const nhlGamesApi = 'https://api.the-odds-api.com//v4/sports/icehockey_nhl/odds/?apiKey=954e71b959d5fd58b97bff76c48657fb&regions=us&markets=h2h,spreads,totals&oddsFormat=american'
 
   useEffect(() => {
     fetch(proFootballGamesApi)
@@ -149,6 +152,7 @@ export default function OddsBase() {
     setProFootballData()
     setCollegeFootballData()
     setMlbData()
+    setNhlData()
     setUpcomingGamesData()
     if (sportTypeFilter === 'NFL') {
       fetch(proFootballGamesApi)
@@ -165,6 +169,11 @@ export default function OddsBase() {
         .then((response) => response.json())
         .then((data) => setMlbData(data))
         // setLoading(false)
+      } else if (sportTypeFilter === 'NHL') {
+        fetch(nhlGamesApi)
+        .then((response) => response.json())
+        .then((data) => setNhlData(data))
+        // setLoading(false)
       } else {
         fetch(upcomingGamesApi)
         .then((response) => response.json())
@@ -177,6 +186,18 @@ export default function OddsBase() {
     setFilteredDataBySportsbook()
     if (sportsbookFilter === 'All') {
       fetchBySportFilter(sportTypeFilter)
+    } else if (sportTypeFilter === 'favorites') {
+      let filteredData = proFootballData.map((proGame) => {
+        return { ...proGame, bookmakers: proGame.bookmakers
+          .filter((book) => book.key === 'barstool')
+          .filter((book) => book.key === 'fanduel')
+          .filter((book) => book.key === 'pointsbetus')
+          .filter((book) => book.key === 'betmgm')
+          .filter((book) => book.key === 'caesars')
+        }
+      })
+      console.log(filteredData)
+      setFilteredDataBySportsbook(filteredData)
     } else if (sportTypeFilter === 'NFL') {
       let filteredData = proFootballData.map((proGame) => {
         return { ...proGame, bookmakers: proGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
@@ -190,6 +211,11 @@ export default function OddsBase() {
     } else if (sportTypeFilter === 'MLB') {
       let filteredData = mlbData.map((mlbGame) => {
         return { ...mlbGame, bookmakers: mlbGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
+      })
+      setFilteredDataBySportsbook(filteredData)
+    } else if (sportTypeFilter === 'NHL') {
+      let filteredData = nhlData.map((nhlGame) => {
+        return { ...nhlGame, bookmakers: nhlGame.bookmakers.filter((book) => book.key === sportsbookFilter) }
       })
       setFilteredDataBySportsbook(filteredData)
     } else if (sportTypeFilter === 'Upcoming') {
@@ -209,6 +235,8 @@ const handleSportTypeFilter = (event) => {
     setSportTypeFilter('Upcoming')
   } else if (event.target.value === 'MLB') {
     setSportTypeFilter('MLB')
+  } else if (event.target.value === 'NHL') {
+    setSportTypeFilter('NHL')
   }
 }
 
@@ -224,9 +252,9 @@ if(loading){
 }
 
 return (
-  <div className="flex flex-col w-full">
-    <div className="h-20 px-20 flex flex-row border border-black">
-      <div className="mr-8 h-full flex flex-col justify-center">
+  <div className="flex flex-col w-max min-w-full bg-cyan-800">
+    <div className="h-20 px-20 flex flex-row border border-black bg-white w-full">
+      <div className="mr-4 h-full flex flex-col justify-center font-medium text-cyan-900">
         Filter by Sport
       </div>
       <div className="py-auto mr-8 h-full flex flex-col justify-center">
@@ -241,13 +269,14 @@ return (
             >
               <MenuItem value={'NFL'}>NFL</MenuItem>
               <MenuItem value={'NCAAF'}>College Football</MenuItem>
+              <MenuItem value={'NHL'}>NHL</MenuItem>
               <MenuItem value={'MLB'}>MLB</MenuItem>
               <MenuItem value={'Upcoming'}>Today's Games</MenuItem>
             </Select>
           </FormControl>
         </Box>
       </div>
-      <div className="mr-8 h-full flex flex-col justify-center">
+      <div className="mr-4 h-full flex flex-col justify-center font-medium text-cyan-900">
         Filter by SportsBook
       </div>
       <div className="py-auto h-full flex flex-col justify-center">
@@ -261,6 +290,7 @@ return (
               className={"h-10"}
             >
               <MenuItem value={'All'}>All</MenuItem>
+              <MenuItem value={'favorites'}>Favorites</MenuItem>
               <MenuItem value={'barstool'}>Barstool Sportsbook</MenuItem>
               <MenuItem value={'betmgm'}>Bet MGM</MenuItem>
               <MenuItem value={'betonlineag'}>BetOnline.ag</MenuItem>
@@ -304,6 +334,15 @@ return (
         filteredDataBySportsbook &&
         filteredDataBySportsbook.map((game) => {
           return <MLBGameOdds gameKey={game.id} game={game} loading={loading} />
+        })
+      }
+      {nhlData && !filteredDataBySportsbook ?
+        nhlData.map((game) => {
+          return <NHLGameOdds gameKey={game.id} game={game} loading={loading} />
+        }) :
+        filteredDataBySportsbook &&
+        filteredDataBySportsbook.map((game) => {
+          return <NHLGameOdds gameKey={game.id} game={game} loading={loading} />
         })
       }
       {upcomingGamesData && !filteredDataBySportsbook ?

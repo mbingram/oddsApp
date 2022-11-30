@@ -7,6 +7,7 @@ import bills from './images/logo-bills.png'
 import broncos from './images/logo-broncos.png'
 import browns from './images/logo-browns.png'
 import bucs from './images/logo-bucs.webp'
+import bengals from './images/logo-bengals.png'
 import cardinals from './images/logo-cardinals.png'
 import chargers from './images/logo-chargers.png'
 import chiefs from './images/logo-chiefs.png'
@@ -21,6 +22,7 @@ import jags from './images/logo-jags.png'
 import lions from './images/logo-lions.png'
 import packers from './images/logo-packers.png'
 import panthers from './images/logo-panthers.png'
+import patriots from './images/logo-patriots.png'
 import raiders from './images/logo-raiders.png'
 import rams from './images/logo-rams.png'
 import ravens from './images/logo-ravens.png'
@@ -31,11 +33,14 @@ import texans from './images/logo-texans.png'
 import titans from './images/logo-titans.png'
 import vikings from './images/logo-vikings.png'
 import LoadingSpinnerNoPadding from './utilities/LoadingSpinner'
+import liveIcon from './images/live-icon.png'
 
 export default function GameOdds({ game, gameKey, loading, setLoading }) {
     var moment = require('moment');
 
     let startTime = moment(game.commence_time).format("ddd, MMM Do, hA")
+    let startTimeInMoment = moment(game.commence_time)
+    let currentTime = moment()
 
     let [sortedBooksByAlpha, setSortedBooksByAlpha] = React.useState()
 
@@ -65,14 +70,21 @@ export default function GameOdds({ game, gameKey, loading, setLoading }) {
     }
 
     return (
-        <div className="flex flex-row m-2 h-36 border border-black rounded-sm w-fit" key={gameKey}>
-            <div className="flex flex-col justify-center">
+        <div className="flex flex-row mx-3 my-6 h-36 rounded-l-md w-fit bg-white border-cyan-100 border" key={gameKey}>
+            <div className="flex flex-col justify-center rounded-l-md">
                 <div className="my-auto ml-2">
-                    {startTime}
+                    {startTimeInMoment < currentTime ? 
+                    <img src={liveIcon} className="h-4 ml-4" alt="live" />
+                    : startTime }
                 </div>
-                <div className="flex flex-row justify-center w-60 h-8 border border-summerYellow">
-                    <div className="flex flex-col justify-center mr-2">
-                        @ {game.home_team}
+                <div className="flex flex-row justify-center w-60 h-10 border border-cyan-400">
+                    <div className="flex flex-row justify-center mr-2 my-auto">
+                        <div className="font-medium text-cyan-600 mr-1">
+                            @
+                        </div>
+                        <div>
+                            {game.home_team}
+                        </div>
                     </div>
                     <div className="flex flex-col justify-center">
                         <img src={game.home_team === "New Orleans Saints" ? saints :
@@ -103,11 +115,13 @@ export default function GameOdds({ game, gameKey, loading, setLoading }) {
                         game.home_team === "San Francisco 49ers" ? sanFran :
                         game.home_team === "Los Angeles Chargers" ? chargers :
                         game.home_team === "Philadelphia Eagles" ? eagles :
-                        game.home_team === "Washington Commanders" && commanders
+                        game.home_team === "Cincinnati Bengals" ? bengals :
+                        game.home_team === "Washington Commanders" ? commanders :
+                        game.home_team === "New England Patriots" && patriots
                         } alt="logo" className="h-6" />
                     </div>
                 </div>
-                <div className="flex flex-row justify-center w-60 h-8 border border-backgroundEggplant">
+                <div className="flex flex-row justify-center w-60 h-10 rounded-l-md">
                     <div className="flex flex-col justify-center mr-2">
                         {game.away_team}
                     </div>
@@ -140,6 +154,7 @@ export default function GameOdds({ game, gameKey, loading, setLoading }) {
                         game.away_team === "San Francisco 49ers" ? sanFran :
                         game.away_team === "Los Angeles Chargers" ? chargers :
                         game.away_team === "Philadelphia Eagles" ? eagles :
+                        game.away_team === "Cincinnati Bengals" ? bengals :
                         game.away_team === "Washington Commanders" && commanders
                         } alt="logo" className="h-6" />
                     </div>
